@@ -1,0 +1,80 @@
+$(function () {
+    iflyLogin.loginboxTransform();
+    init();
+});
+
+function init() {
+    if ($("#hasErrors").html()) {
+        iflyLogin.ck($("#hasErrors").html(), 'icon-warning');
+        $("#hasErrors").html("");
+    }
+    if($("#divConfirm").is(":visible")==true){
+        changeCode();
+    }
+}
+
+//发送请求到服务器之前校验
+function check() {
+    if($("#username").val()==""){
+        iflyLogin.ck("域账号不能为空", 'icon-warning');
+        return false;
+    }
+    if($("#password").val()==""){
+        iflyLogin.ck("密码不能为空", 'icon-warning');
+        return false;
+    }
+    if($("#divConfirm").is(":visible")==true){
+        if($("#code").val()==""){
+            iflyLogin.ck("验证码不能为空", 'icon-warning');
+            return false;
+        }
+    }
+    $("#password").val(window.BASE64.encoder($("#password").val()));
+    return true;
+}
+
+//检查验证码是否正确
+function changeCode() {
+    //修改验证码
+    $("#captchaImg").attr('src', contextPath() + '/captcha/get?id=' + uuid());
+}
+
+//生成UUID
+function uuid() {
+    //获取系统当前的时间
+    var d = new Date().getTime();
+    //替换uuid里面的x和y
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        //取余 16进制
+        var r = (d + Math.random() * 16) % 16 | 0;
+        //向下去整
+        d = Math.floor(d / 16);
+        //toString 表示编程16进制的数据
+        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+    return uuid;
+};
+
+// 获取到当前项目的名称
+var contextPath = function () {
+    var path = "/" + location.pathname.split("/")[1];
+    //当项目的目录是根目录的情况
+    if (path == "/login") {
+        return "";
+    } else {
+        return path;
+    }
+}
+
+var iflyLogin = {
+    count: 0,
+    ck: function (msg, icon) {
+        this.count++;
+        var warning = '<div class="iflyui-tips-box" id="iflyui-tips-box-' + this.count + '"><div class="iflyui-' + icon + '"></div>' + msg + '</div>';
+        parent.$('body').append(warning);
+        setTimeout("$('#iflyui-tips-box-" + this.count + "').remove()", 2000)
+    },
+    loginboxTransform: function () {
+        $('.ifly-loginbox-transform').css({'marginTop': -$('.ifly-loginbox-transform').height() / 2});
+    }
+}
