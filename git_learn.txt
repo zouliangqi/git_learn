@@ -10,3 +10,7 @@ git remote add origin git@github.com:zouliangqi/repo-name.git
 git push -u origin master
 git push origin master
 git remote rm origin
+
+git add
+git commit
+git push
