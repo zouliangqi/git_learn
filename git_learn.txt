@@ -1,0 +1,12 @@
+git init
+git add readme.txt      
+git add -A
+git commit -m "wrote a readme file"
+git status
+git diff
+git log
+git log --pretty=oneline
+git remote add origin git@github.com:zouliangqi/repo-name.git
+git push -u origin master
+git push origin master
+git remote rm origin
