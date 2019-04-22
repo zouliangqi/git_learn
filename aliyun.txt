@@ -1,1 +1,6 @@
 ÊÚÈ¨80¶Ë¿Ú  iptables -I INPUT -p tcp --dport 80 -j ACCEPT
+netstat -ntlp
+netstat -ntulp |grep 80
+netstat -an | grep 3306
+systemctl status firewalld
+systemctl disable firewalld
